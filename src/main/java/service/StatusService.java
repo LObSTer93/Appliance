@@ -2,7 +2,9 @@ package service;
 
 import dto.StatusDTO;
 
+import java.util.List;
+
 public interface StatusService {
 
-    StatusDTO getSwitchStatus();
+    List<StatusDTO> getStatuses();
 }

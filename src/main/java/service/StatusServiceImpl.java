@@ -7,6 +7,9 @@ import mapper.StatusMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class StatusServiceImpl implements StatusService {
 
@@ -18,8 +21,10 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public StatusDTO getSwitchStatus() {
-        StatusDAO statusDAO = statusRepository.getByName("switch");
-        return StatusMapper.daoToDto(statusDAO);
+    public List<StatusDTO> getStatuses() {
+        List<StatusDAO> statusDAOList = statusRepository.findAll();
+        return statusDAOList.stream()
+                .map(StatusMapper::daoToDto)
+                .collect(Collectors.toList());
     }
 }

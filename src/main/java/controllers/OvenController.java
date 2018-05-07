@@ -2,10 +2,10 @@ package controllers;
 
 import dto.StatusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import service.StatusService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/ovenApi")
@@ -18,8 +18,8 @@ public class OvenController {
         this.statusService = statusService;
     }
 
-    @RequestMapping(value = "/switchStatus", method = RequestMethod.GET)
-    public StatusDTO getSwitchStatus(){
-        return statusService.getSwitchStatus();
+    @GetMapping
+    public List<StatusDTO> getStatuses(){
+        return statusService.getStatuses();
     }
 }

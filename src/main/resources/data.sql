@@ -1,2 +1,4 @@
 insert into status(name, state) values
-  ('switch', 'off');
+  ('Power', 'Off'),
+  ('Door', 'Closed'),
+  ('Program', 'Pizza');
