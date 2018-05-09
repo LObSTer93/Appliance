@@ -22,8 +22,8 @@ public class OvenController {
         return statusService.getStatuses();
     }
 
-    @PutMapping(value = "{statusName}")
-    public void setStatus(@PathVariable("statusName") String statusName, @RequestParam("newState") String newState){
-        statusService.editStatus(statusName, newState);
+    @PutMapping
+    public void setStatus(@RequestBody StatusRequest statusRequest){
+        statusService.editStatus(statusRequest.getStatusName(), statusRequest.getNewState());
     }
 }
