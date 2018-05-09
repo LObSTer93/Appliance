@@ -27,4 +27,9 @@ public class StatusServiceImpl implements StatusService {
                 .map(StatusMapper::daoToDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void editStatus(String statusName, String newState) {
+        statusRepository.edit(statusName, newState);
+    }
 }

@@ -19,7 +19,7 @@ public class WebAppInitalizer extends AbstractAnnotationConfigDispatcherServletI
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/"};
+        return new String[]{"/ovenApi"};
     }
 
     @Override

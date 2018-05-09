@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {RootConfig.class, DBConfig.class, IntegrationConfig.class})
-@Transactional
 public class OvenControllerIntegrationTest {
 
     @Autowired

@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {RootConfig.class, DBConfig.class})
-@Transactional
 public class StatusServiceImplIntegrationTest {
 
     @Autowired
