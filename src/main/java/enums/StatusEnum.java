@@ -3,15 +3,15 @@ package enums;
 import lombok.Getter;
 
 @Getter
-public enum StatusEnum {
+public enum StatusEnum implements BasicEnum{
 
     POWER("Power"),
     DOOR("Door"),
     PROGRAM("Program");
 
-    private String name;
+    private String value;
 
-    StatusEnum(String name) {
-        this.name = name;
+    StatusEnum(String value) {
+        this.value = value;
     }
 }

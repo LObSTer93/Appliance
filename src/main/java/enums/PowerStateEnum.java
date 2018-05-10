@@ -3,14 +3,14 @@ package enums;
 import lombok.Getter;
 
 @Getter
-public enum PowerStateEnum {
+public enum PowerStateEnum implements BasicEnum{
 
     ON("On"),
     OFF("Off");
 
-    private String state;
+    private String value;
 
-    PowerStateEnum(String state) {
-        this.state = state;
+    PowerStateEnum(String value) {
+        this.value = value;
     }
 }

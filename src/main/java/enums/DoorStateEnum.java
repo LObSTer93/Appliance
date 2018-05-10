@@ -3,14 +3,14 @@ package enums;
 import lombok.Getter;
 
 @Getter
-public enum DoorStateEnum {
+public enum DoorStateEnum implements BasicEnum{
 
     OPEN("Open"),
     CLOSED("Closed");
 
-    private String state;
+    private String value;
 
-    DoorStateEnum(String state) {
-        this.state = state;
+    DoorStateEnum(String value) {
+        this.value = value;
     }
 }

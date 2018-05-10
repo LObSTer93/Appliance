@@ -8,7 +8,6 @@ import service.StatusService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/ovenApi")
 public class OvenController {
 
     private StatusService statusService;
@@ -21,5 +20,10 @@ public class OvenController {
     @GetMapping
     public List<StatusDTO> getStatuses(){
         return statusService.getStatuses();
+    }
+
+    @PutMapping
+    public void setStatus(@RequestBody StatusRequest statusRequest){
+        statusService.editStatus(statusRequest.getStatus(), statusRequest.getState());
     }
 }
