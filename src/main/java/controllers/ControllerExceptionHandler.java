@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.Error;
 import exceptions.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,7 +13,8 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody Error exceptionHandler(ApiException e){
+    public @ResponseBody
+    Error exceptionHandler(ApiException e){
         return new Error(e.getMessage());
     }
 }

@@ -3,9 +3,10 @@ package service;
 import dao.StatusDAO;
 import dao.StatusRepository;
 import dto.StatusDTO;
-import enums.*;
+import exceptions.ErrorMessageEnum;
+import status_enums.*;
 import exceptions.ApiException;
-import mapper.StatusMapper;
+import dto.StatusMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +15,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class StatusServiceImpl implements StatusService {
-
-    static final String NO_STATUS_MESSAGE = "No status information is presented";
-    static final String NO_STATE_MESSAGE = "No state information is presented";
-    public static final String INCORRECT_STATUS_MESSAGE = "There is no such status";
-    public static final String INCORRECT_STATE_MESSAGE = "There is no such state";
 
     private StatusRepository statusRepository;
 
@@ -38,7 +34,7 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public StatusDTO getStatus(String status) {
         if(!EnumUtils.isEnumContainsValue(StatusEnum.values(), status)){
-            throw new ApiException(INCORRECT_STATUS_MESSAGE);
+            throw new ApiException(ErrorMessageEnum.INCORRECT_STATUS_MESSAGE.getMessage());
         }
         StatusDAO statusDAO = statusRepository.findByName(status);
         return StatusMapper.daoToDto(statusDAO);
@@ -52,13 +48,13 @@ public class StatusServiceImpl implements StatusService {
 
     private void checkValues(String status, String state){
         if(status == null){
-            throw new ApiException(NO_STATUS_MESSAGE);
+            throw new ApiException(ErrorMessageEnum.NO_STATUS_MESSAGE.getMessage());
         }
         if(state == null){
-            throw new ApiException(NO_STATE_MESSAGE);
+            throw new ApiException(ErrorMessageEnum.NO_STATE_MESSAGE.getMessage());
         }
         if(!EnumUtils.isEnumContainsValue(StatusEnum.values(), status)){
-            throw new ApiException(INCORRECT_STATUS_MESSAGE);
+            throw new ApiException(ErrorMessageEnum.INCORRECT_STATUS_MESSAGE.getMessage());
         }
         boolean isState = true;
         switch(status){
@@ -82,7 +78,7 @@ public class StatusServiceImpl implements StatusService {
             }
         }
         if(!isState){
-            throw new ApiException(INCORRECT_STATE_MESSAGE);
+            throw new ApiException(ErrorMessageEnum.INCORRECT_STATE_MESSAGE.getMessage());
         }
     }
 }

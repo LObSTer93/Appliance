@@ -3,8 +3,9 @@ package service;
 import dao.StatusDAO;
 import dao.StatusRepository;
 import dto.StatusDTO;
-import enums.PowerStateEnum;
-import enums.StatusEnum;
+import exceptions.ErrorMessageEnum;
+import status_enums.PowerStateEnum;
+import status_enums.StatusEnum;
 import exceptions.ApiException;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -43,22 +44,22 @@ public class StatusServiceImplTest {
         try {
             statusService.editStatus(null, "90");
         }catch (ApiException e){
-            assertEquals(e.getMessage(), NO_STATUS_MESSAGE);
+            assertEquals(e.getMessage(), ErrorMessageEnum.NO_STATUS_MESSAGE.getMessage());
         }
         try {
             statusService.editStatus("Power", null);
         }catch (ApiException e){
-            assertEquals(e.getMessage(), NO_STATE_MESSAGE);
+            assertEquals(e.getMessage(), ErrorMessageEnum.NO_STATE_MESSAGE.getMessage());
         }
         try {
             statusService.editStatus("Powerr", "Ot");
         }catch (ApiException e){
-            assertEquals(e.getMessage(), INCORRECT_STATUS_MESSAGE);
+            assertEquals(e.getMessage(), ErrorMessageEnum.INCORRECT_STATUS_MESSAGE.getMessage());
         }
         try {
             statusService.editStatus("Power", "Ot");
         }catch (ApiException e){
-            assertEquals(e.getMessage(), INCORRECT_STATE_MESSAGE);
+            assertEquals(e.getMessage(), ErrorMessageEnum.INCORRECT_STATE_MESSAGE.getMessage());
         }
     }
 

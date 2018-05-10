@@ -1,8 +1,8 @@
 package controllers;
 
 import dto.StatusDTO;
-import enums.PowerStateEnum;
-import enums.StatusEnum;
+import status_enums.PowerStateEnum;
+import status_enums.StatusEnum;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.http.MediaType;

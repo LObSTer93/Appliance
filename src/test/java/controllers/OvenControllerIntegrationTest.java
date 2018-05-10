@@ -3,10 +3,11 @@ package controllers;
 import config.DBConfig;
 import config.RootConfig;
 import dto.StatusDTO;
-import enums.DoorStateEnum;
-import enums.PowerStateEnum;
-import enums.ProgramStateEnum;
-import enums.StatusEnum;
+import exceptions.ErrorMessageEnum;
+import status_enums.DoorStateEnum;
+import status_enums.PowerStateEnum;
+import status_enums.ProgramStateEnum;
+import status_enums.StatusEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,6 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-import static service.StatusServiceImpl.INCORRECT_STATE_MESSAGE;
-import static service.StatusServiceImpl.INCORRECT_STATUS_MESSAGE;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {RootConfig.class, DBConfig.class, IntegrationConfig.class})
@@ -68,7 +67,7 @@ public class OvenControllerIntegrationTest {
                 .andReturn()
                 .getResponse();
 
-        String responseBody = "{\"message\":\"" + INCORRECT_STATUS_MESSAGE + "\"}";
+        String responseBody = "{\"message\":\"" + ErrorMessageEnum.INCORRECT_STATUS_MESSAGE.getMessage() + "\"}";
         assertEquals(response.getContentAsString(), responseBody);
         assertEquals(response.getStatus(), HttpStatus.NOT_FOUND.value());
     }
@@ -82,7 +81,7 @@ public class OvenControllerIntegrationTest {
                 .content(requestBody)
         ).andReturn().getResponse();
 
-        String responseBody = "{\"message\":\"" + INCORRECT_STATE_MESSAGE + "\"}";
+        String responseBody = "{\"message\":\"" + ErrorMessageEnum.INCORRECT_STATE_MESSAGE.getMessage() + "\"}";
         assertEquals(response.getContentAsString(), responseBody);
         assertEquals(response.getStatus(), HttpStatus.NOT_FOUND.value());
     }

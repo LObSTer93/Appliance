@@ -1,6 +1,7 @@
 package controllers;
 
 import dto.StatusDTO;
+import dto.StatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import service.StatusService;

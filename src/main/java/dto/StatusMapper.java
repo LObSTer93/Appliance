@@ -1,4 +1,4 @@
-package mapper;
+package dto;
 
 import dao.StatusDAO;
 import dto.StatusDTO;
