@@ -22,6 +22,11 @@ public class OvenController {
         return statusService.getStatuses();
     }
 
+    @GetMapping("/{status}")
+    public StatusDTO getStatus(@PathVariable("status") String status){
+        return statusService.getStatus(status);
+    }
+
     @PutMapping
     public void setStatus(@RequestBody StatusRequest statusRequest){
         statusService.editStatus(statusRequest.getStatus(), statusRequest.getState());

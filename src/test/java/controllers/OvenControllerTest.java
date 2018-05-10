@@ -28,26 +28,46 @@ public class OvenControllerTest {
 
     @Test
     public void getStatuses() throws Exception {
-        StatusDTO statusDTO = StatusDTO.builder()
-                .status(StatusEnum.POWER.getValue())
-                .state(PowerStateEnum.OFF.getValue())
-                .build();
-        when(statusService.getStatuses()).thenReturn(Collections.singletonList(statusDTO));
+        when(statusService.getStatuses()).thenReturn(Collections.singletonList(getStatusDTO()));
 
-        MvcResult mvcResult = mockMvc.perform(get("/ovenApi")).andReturn();
-        String responseMessage = "[{\"status\":\"" + StatusEnum.POWER.getValue() + "\",\"state\":\"" + PowerStateEnum.OFF.getValue() + "\"}]";
+        MvcResult mvcResult = mockMvc.perform(get("/")).andReturn();
+        String responseMessage = "[" + getResponseMessage() + "]";
 
         assertEquals(mvcResult.getResponse().getContentAsString(), responseMessage);
         verify(statusService, times(1)).getStatuses();
     }
 
     @Test
-    public void setStatus() throws Exception {
-        String body = "{\"status\": \"Power\", \"state\": \"On\"}";
+    public void getStatus() throws Exception {
+        when(statusService.getStatus(StatusEnum.POWER.getValue())).thenReturn(getStatusDTO());
 
-        MvcResult mvcResult = mockMvc.perform(put("/ovenApi")
+        MvcResult mvcResult = mockMvc.perform(get("/" + StatusEnum.POWER.getValue())).andReturn();
+        String responseMessage = getResponseMessage();
+
+        assertEquals(mvcResult.getResponse().getContentAsString(), responseMessage);
+        verify(statusService, times(1)).getStatus(StatusEnum.POWER.getValue());
+    }
+
+    @Test
+    public void setStatus() throws Exception {
+        String requestBody = "{\"status\": \"" + StatusEnum.POWER.getValue() + "\", \"state\": \"" + PowerStateEnum.ON.getValue()+ "\"}";
+
+        mockMvc.perform(put("/ovenApi")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body)
-        ).andReturn();
+                .content(requestBody)
+        );
+
+        verify(statusService, times(1)).editStatus(StatusEnum.POWER.getValue(), PowerStateEnum.ON.getValue());
+    }
+
+    private String getResponseMessage(){
+        return "{\"status\":\"" + StatusEnum.POWER.getValue() + "\",\"state\":\"" + PowerStateEnum.OFF.getValue() + "\"}";
+    }
+
+    private static StatusDTO getStatusDTO(){
+        return StatusDTO.builder()
+                .status(StatusEnum.POWER.getValue())
+                .state(PowerStateEnum.OFF.getValue())
+                .build();
     }
 }

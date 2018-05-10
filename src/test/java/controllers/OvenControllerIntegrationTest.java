@@ -2,6 +2,7 @@ package controllers;
 
 import config.DBConfig;
 import config.RootConfig;
+import dto.StatusDTO;
 import enums.DoorStateEnum;
 import enums.PowerStateEnum;
 import enums.ProgramStateEnum;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import static service.StatusServiceImpl.INCORRECT_STATE_MESSAGE;
+import static service.StatusServiceImpl.INCORRECT_STATUS_MESSAGE;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {RootConfig.class, DBConfig.class, IntegrationConfig.class})
@@ -43,7 +45,7 @@ public class OvenControllerIntegrationTest {
 
     @Test
     public void getStatuses() throws Exception {
-        MvcResult result = mockMvc.perform(get("/ovenApi")).andReturn();
+        MvcResult result = mockMvc.perform(get("/")).andReturn();
         String responseMessage = "[" +
                 "{\"status\":\"" + StatusEnum.POWER.getValue() + "\",\"state\":\"" + PowerStateEnum.OFF.getValue() + "\"}," +
                 "{\"status\":\"" + StatusEnum.DOOR.getValue() + "\",\"state\":\"" + DoorStateEnum.CLOSED.getValue() + "\"}," +
@@ -53,10 +55,29 @@ public class OvenControllerIntegrationTest {
     }
 
     @Test
-    public void setStatus() throws Exception {
-        String requestBody = "{\"status\": \"Power\", \"state\": \"Ot\"}";
+    public void getStatusSuccess() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(get("/" + StatusEnum.POWER.getValue()))
+                .andReturn()
+                .getResponse();
+        assertEquals(response.getContentAsString(), "{\"status\":\"" + StatusEnum.POWER.getValue() + "\",\"state\":\"" + PowerStateEnum.OFF.getValue() + "\"}");
+    }
 
-        MockHttpServletResponse response = mockMvc.perform(put("/ovenApi")
+    @Test
+    public void getStatusError() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(get("/Temperature"))
+                .andReturn()
+                .getResponse();
+
+        String responseBody = "{\"message\":\"" + INCORRECT_STATUS_MESSAGE + "\"}";
+        assertEquals(response.getContentAsString(), responseBody);
+        assertEquals(response.getStatus(), HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    public void setStatusError() throws Exception {
+        String requestBody = "{\"status\": \"" + StatusEnum.POWER.getValue() + "\", \"state\": \"Ot\"}";
+
+        MockHttpServletResponse response = mockMvc.perform(put("/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
         ).andReturn().getResponse();
@@ -64,5 +85,21 @@ public class OvenControllerIntegrationTest {
         String responseBody = "{\"message\":\"" + INCORRECT_STATE_MESSAGE + "\"}";
         assertEquals(response.getContentAsString(), responseBody);
         assertEquals(response.getStatus(), HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    public void setStatusSuccess() throws Exception {
+        StatusDTO statusDTO = ovenController.getStatus(StatusEnum.POWER.getValue());
+        assertEquals(statusDTO.getState(), PowerStateEnum.OFF.getValue());
+
+        String requestBody = "{\"status\": \"" + StatusEnum.POWER.getValue() + "\", \"state\": \"" + PowerStateEnum.ON.getValue()+ "\"}";
+
+        mockMvc.perform(put("/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+        );
+
+        statusDTO = ovenController.getStatus(StatusEnum.POWER.getValue());
+        assertEquals(statusDTO.getState(), PowerStateEnum.ON.getValue());
     }
 }

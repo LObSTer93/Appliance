@@ -23,16 +23,19 @@ public class StatusServiceImplTest {
 
     @Test
     public void getStatuses(){
-        StatusDAO statusDAO = new StatusDAO();
-        statusDAO.setId(1);
-        statusDAO.setName(StatusEnum.POWER.getValue());
-        statusDAO.setState(PowerStateEnum.OFF.getValue());
-        when(statusRepository.findAll()).thenReturn(Collections.singletonList(statusDAO));
+        when(statusRepository.findAll()).thenReturn(Collections.singletonList(getStatusDAO()));
 
         List<StatusDTO> statuses = statusService.getStatuses();
         StatusDTO statusDTO = statuses.get(0);
-        assertEquals(statusDTO.getStatus(), StatusEnum.POWER.getValue());
-        assertEquals(statusDTO.getState(), PowerStateEnum.OFF.getValue());
+        checkStatus(statusDTO);
+    }
+
+    @Test
+    public void getStatus(){
+        when(statusRepository.findByName(StatusEnum.POWER.getValue())).thenReturn(getStatusDAO());
+
+        StatusDTO statusDTO = statusService.getStatus(StatusEnum.POWER.getValue());
+        checkStatus(statusDTO);
     }
 
     @Test
@@ -57,5 +60,18 @@ public class StatusServiceImplTest {
         }catch (ApiException e){
             assertEquals(e.getMessage(), INCORRECT_STATE_MESSAGE);
         }
+    }
+
+    private StatusDAO getStatusDAO(){
+        StatusDAO statusDAO = new StatusDAO();
+        statusDAO.setId(1);
+        statusDAO.setName(StatusEnum.POWER.getValue());
+        statusDAO.setState(PowerStateEnum.OFF.getValue());
+        return statusDAO;
+    }
+
+    private void checkStatus(StatusDTO statusDTO){
+        assertEquals(statusDTO.getStatus(), StatusEnum.POWER.getValue());
+        assertEquals(statusDTO.getState(), PowerStateEnum.OFF.getValue());
     }
 }

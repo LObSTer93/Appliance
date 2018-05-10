@@ -17,7 +17,7 @@ public class StatusServiceImpl implements StatusService {
 
     static final String NO_STATUS_MESSAGE = "No status information is presented";
     static final String NO_STATE_MESSAGE = "No state information is presented";
-    static final String INCORRECT_STATUS_MESSAGE = "There is no such status";
+    public static final String INCORRECT_STATUS_MESSAGE = "There is no such status";
     public static final String INCORRECT_STATE_MESSAGE = "There is no such state";
 
     private StatusRepository statusRepository;
@@ -33,6 +33,15 @@ public class StatusServiceImpl implements StatusService {
         return statusDAOList.stream()
                 .map(StatusMapper::daoToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public StatusDTO getStatus(String status) {
+        if(!EnumUtils.isEnumContainsValue(StatusEnum.values(), status)){
+            throw new ApiException(INCORRECT_STATUS_MESSAGE);
+        }
+        StatusDAO statusDAO = statusRepository.findByName(status);
+        return StatusMapper.daoToDto(statusDAO);
     }
 
     @Override

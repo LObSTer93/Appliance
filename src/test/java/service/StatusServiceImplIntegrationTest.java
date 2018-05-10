@@ -29,7 +29,19 @@ public class StatusServiceImplIntegrationTest {
     }
 
     @Test
+    public void getStatus(){
+        StatusDTO statusDTO = statusService.getStatus(StatusEnum.POWER.getValue());
+        assertEquals(statusDTO.getState(), PowerStateEnum.OFF.getValue());
+    }
+
+    @Test
     public void editStatus(){
+        StatusDTO statusDTO = statusService.getStatus(StatusEnum.POWER.getValue());
+        assertEquals(statusDTO.getState(), PowerStateEnum.OFF.getValue());
+
         statusService.editStatus(StatusEnum.POWER.getValue(), PowerStateEnum.ON.getValue());
+
+        statusDTO = statusService.getStatus(StatusEnum.POWER.getValue());
+        assertEquals(statusDTO.getState(), PowerStateEnum.ON.getValue());
     }
 }
