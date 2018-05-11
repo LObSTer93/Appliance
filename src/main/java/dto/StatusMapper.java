@@ -1,7 +1,6 @@
 package dto;
 
 import dao.StatusDAO;
-import dto.StatusDTO;
 
 public class StatusMapper {
 

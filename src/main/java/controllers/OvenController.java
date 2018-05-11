@@ -9,6 +9,7 @@ import service.StatusService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/ovenApi")
 public class OvenController {
 
     private StatusService statusService;
