@@ -44,7 +44,7 @@ public class OvenControllerIntegrationTest {
 
     @Test
     public void getStatuses() throws Exception {
-        MvcResult result = mockMvc.perform(get("/")).andReturn();
+        MvcResult result = mockMvc.perform(get("/ovenApi")).andReturn();
         String responseMessage = "[" +
                 "{\"status\":\"" + StatusEnum.POWER.getValue() + "\",\"state\":\"" + PowerStateEnum.OFF.getValue() + "\"}," +
                 "{\"status\":\"" + StatusEnum.DOOR.getValue() + "\",\"state\":\"" + DoorStateEnum.CLOSED.getValue() + "\"}," +
@@ -55,7 +55,7 @@ public class OvenControllerIntegrationTest {
 
     @Test
     public void getStatusSuccess() throws Exception {
-        MockHttpServletResponse response = mockMvc.perform(get("/" + StatusEnum.POWER.getValue()))
+        MockHttpServletResponse response = mockMvc.perform(get("/ovenApi/" + StatusEnum.POWER.getValue()))
                 .andReturn()
                 .getResponse();
         assertEquals(response.getContentAsString(), "{\"status\":\"" + StatusEnum.POWER.getValue() + "\",\"state\":\"" + PowerStateEnum.OFF.getValue() + "\"}");
@@ -63,7 +63,7 @@ public class OvenControllerIntegrationTest {
 
     @Test
     public void getStatusError() throws Exception {
-        MockHttpServletResponse response = mockMvc.perform(get("/Temperature"))
+        MockHttpServletResponse response = mockMvc.perform(get("/ovenApi/Temperature"))
                 .andReturn()
                 .getResponse();
 
@@ -76,7 +76,7 @@ public class OvenControllerIntegrationTest {
     public void setStatusError() throws Exception {
         String requestBody = "{\"status\": \"" + StatusEnum.POWER.getValue() + "\", \"state\": \"Ot\"}";
 
-        MockHttpServletResponse response = mockMvc.perform(put("/")
+        MockHttpServletResponse response = mockMvc.perform(put("/ovenApi")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
         ).andReturn().getResponse();
@@ -93,7 +93,7 @@ public class OvenControllerIntegrationTest {
 
         String requestBody = "{\"status\": \"" + StatusEnum.POWER.getValue() + "\", \"state\": \"" + PowerStateEnum.ON.getValue()+ "\"}";
 
-        mockMvc.perform(put("/")
+        mockMvc.perform(put("/ovenApi")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
         );

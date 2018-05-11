@@ -93,7 +93,7 @@
     </dependencies>
 
     <build>
-        <finalName>spring-crud</finalName>
+        <finalName>ApplianceAPI</finalName>
         <plugins>
 
             <!--no web.xml-->

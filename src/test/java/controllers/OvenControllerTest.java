@@ -30,7 +30,7 @@ public class OvenControllerTest {
     public void getStatuses() throws Exception {
         when(statusService.getStatuses()).thenReturn(Collections.singletonList(getStatusDTO()));
 
-        MvcResult mvcResult = mockMvc.perform(get("/")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/ovenApi")).andReturn();
         String responseMessage = "[" + getResponseMessage() + "]";
 
         assertEquals(mvcResult.getResponse().getContentAsString(), responseMessage);
@@ -41,7 +41,7 @@ public class OvenControllerTest {
     public void getStatus() throws Exception {
         when(statusService.getStatus(StatusEnum.POWER.getValue())).thenReturn(getStatusDTO());
 
-        MvcResult mvcResult = mockMvc.perform(get("/" + StatusEnum.POWER.getValue())).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/ovenApi/" + StatusEnum.POWER.getValue())).andReturn();
         String responseMessage = getResponseMessage();
 
         assertEquals(mvcResult.getResponse().getContentAsString(), responseMessage);
